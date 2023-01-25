@@ -1,0 +1,4 @@
+cisco_external: 1.1.1.1
+dtc_external: 2.2.2.2
+username: admin
+password: infoblox
