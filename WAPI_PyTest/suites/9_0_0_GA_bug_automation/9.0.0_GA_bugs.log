@@ -1,0 +1,23 @@
+2023-02-12 21:52:44,663 - root(921873) - INFO - 
+========================================================
+
+2023-02-12 21:52:44,663 - root(921873) - INFO - Restarting services and validate logs
+2023-02-12 21:52:44,663 - root(921873) - INFO - 
+========================================================
+
+2023-02-12 21:52:44,663 - root(921873) - INFO - 
+========================================================
+
+2023-02-12 21:52:44,663 - root(921873) - INFO - Restarting Services...
+2023-02-12 21:52:44,664 - root(921873) - INFO - 
+========================================================
+
+2023-02-12 21:52:44,688 - root(921873) - INFO - Request finished successfully with response code: 200 OK
+2023-02-12 21:52:44,708 - root(921873) - INFO - Request finished successfully with response code: 200 OK
+2023-02-12 21:52:44,732 - root(921873) - INFO - Request finished successfully with response code: 200 OK
+2023-02-12 21:53:19,737 - root(921873) - INFO - 
+***************. Restart completed successfully .***************
+
+2023-02-12 21:53:20,209 - root(921873) - INFO - 
+***************. Test Case 3 Execution Completed .***************
+

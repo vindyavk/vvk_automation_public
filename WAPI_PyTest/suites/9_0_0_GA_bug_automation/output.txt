@@ -1,0 +1,109 @@
+==> /infoblox/var/infoblox.log <==
+[2023/02/13 05:18:33.532] (31876 /infoblox/one/bin/sshd) : 
+[2023/02/13 05:18:33.751] (31925 /infoblox/one/bin/firewall) : Enabled firewall SSH
+[2023/02/13 05:18:34.339] (31936 /infoblox/one/bin/check_syslog_conf) : syslog firewall sync
+[2023/02/13 05:24:37.706] (34689 <py>/infoblox/dns/bin/purge_ad_users) /infoblox/dns/bin/purge_ad_users:80 main(): Purged network users
+[2023/02/13 05:28:17.470] (20273 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:28:17.501] (20274 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:28:17.528] (31436 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:30:44.376] (37290 sshd: admin [priv]) authentication.c:195 _authenticate(): Attempting NIOS authentication
+[2023/02/13 05:30:44.376] (37290 sshd: admin [priv]) one_authenticate.c:1181 one_authenticate_authorize_user(): DB-restricted authentication Failed
+[2023/02/13 05:30:44.391] (37290 sshd: admin [priv]) one_authenticate.c:268 one_authenticate_local_admin(): Attempting Local Authentication for admin
+[2023/02/13 05:30:44.391] (37290 sshd: admin [priv]) one_authenticate.c:946 one_authenticate_admin(): Local Authentication Succeeded
+[2023/02/13 05:30:44.393] (37290 sshd: admin [priv]) one_authenticate.c:1653 one_authorize_user(): User group = admin-group
+[2023/02/13 05:30:44.393] (37290 sshd: admin [priv]) one_authenticate.c:1771 one_authorize_user(): Authorization succeeded for admin
+[2023/02/13 05:30:44.398] (37290 sshd: admin [priv]) authentication.c:200 _authenticate(): Successfully authenticated NIOS superuser 'admin'
+[2023/02/13 05:30:44.408] (37290 sshd: admin [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: admin@10.120.21.85
+[2023/02/13 05:30:44.559] (37396 -serial_console) one_authenticate.c:1653 one_authorize_user(): User group = admin-group
+[2023/02/13 05:30:44.559] (37396 -serial_console) one_authenticate.c:1771 one_authorize_user(): Authorization succeeded for admin
+[2023/02/13 05:30:44.606] (37290 sshd: admin [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: admin@10.120.21.85
+[2023/02/13 05:30:44.611] (37396 -serial_console) main.c:2870 main(): Recv TERMs signal ... Clean up and exit!
+[2023/02/13 05:30:44.842] (20277 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:30:46.755] (37411 sshd: admin [priv]) authentication.c:195 _authenticate(): Attempting NIOS authentication
+[2023/02/13 05:30:46.755] (37411 sshd: admin [priv]) one_authenticate.c:1181 one_authenticate_authorize_user(): DB-restricted authentication Failed
+[2023/02/13 05:30:46.769] (37411 sshd: admin [priv]) one_authenticate.c:268 one_authenticate_local_admin(): Attempting Local Authentication for admin
+[2023/02/13 05:30:46.769] (37411 sshd: admin [priv]) one_authenticate.c:946 one_authenticate_admin(): Local Authentication Succeeded
+[2023/02/13 05:30:46.770] (37411 sshd: admin [priv]) one_authenticate.c:1653 one_authorize_user(): User group = admin-group
+[2023/02/13 05:30:46.770] (37411 sshd: admin [priv]) one_authenticate.c:1771 one_authorize_user(): Authorization succeeded for admin
+[2023/02/13 05:30:46.772] (37411 sshd: admin [priv]) authentication.c:200 _authenticate(): Successfully authenticated NIOS superuser 'admin'
+[2023/02/13 05:30:46.786] (37411 sshd: admin [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: admin@10.120.21.85
+[2023/02/13 05:30:46.909] (37413 -serial_console) one_authenticate.c:1653 one_authorize_user(): User group = admin-group
+[2023/02/13 05:30:46.910] (37413 -serial_console) one_authenticate.c:1771 one_authorize_user(): Authorization succeeded for admin
+[2023/02/13 05:30:46.951] (37413 -serial_console) 12943360 admin> set support_install
+[2023/02/13 05:30:47.035] (37411 sshd: admin [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: admin@10.120.21.85
+[2023/02/13 05:30:47.036] (37413 -serial_console) 12967936 admin> exit
+[2023/02/13 05:30:48.783] (37444 sshd: root [priv]) authentication.c:156 _authenticate(): Successfully authenticated linux user 'root'
+[2023/02/13 05:30:48.788] (37444 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:30:52.018] (37515 /infoblox/one/bin/check_syslog_conf) : syslog firewall sync
+[2023/02/13 05:31:22.898] (37851 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:31:51.572] (37851 sshd: root [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: root@10.120.21.85
+[2023/02/13 05:32:12.732] (38316 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:41:34.916] (38316 sshd: root [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: root@10.120.21.85
+[2023/02/13 05:42:04.934] (42651 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:42:32.338] (42651 sshd: root [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: root@10.120.21.85
+[2023/02/13 05:50:10.534] (46267 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:50:10.735] (46274 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+[2023/02/13 05:50:10.789] (46274 sshd: root [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: root@10.120.21.85
+[2023/02/13 05:50:10.793] (46267 sshd: root [priv]) ssh_pam.c:196 pam_sm_close_session(): SSH session closed: root@10.120.21.85
+[2023/02/13 05:52:16.668] (20274 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:52:16.689] (31436 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:52:16.709] (20277 /usr/bin/httpd) userauth_ro.py:959 _log(): [admin] Login_Allowed to=AdminConnector ip=10.120.21.85 auth=LOCAL group=admin-group apparently_via=API
+[2023/02/13 05:52:51.838] (47467 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+
+==> /var/log/syslog <==
+2023-02-13T04:54:05+00:00 daemon infoblox.localdomain systemd[1]: info Started Erlang Port Mapper Daemon.
+2023-02-13T04:54:05+00:00 daemon infoblox.localdomain epmd[19695]: info epmd: Mon Feb 13 04:54:05 2023: got KILL_REQ - terminates normal
+2023-02-13T04:54:05+00:00 user infoblox.localdomain rabbitmq_control[19386]: info "stop" command completed successfully
+2023-02-13T04:54:05+00:00 daemon infoblox.localdomain systemd[1]: info epmd.service: Succeeded.
+2023-02-13T04:54:35+00:00 user infoblox.localdomain monitor[20546]: alert Type: httpd, State: Red, Event: An Apache software failure has occurred. 
+2023-02-13T05:00:11+00:00 daemon infoblox.localdomain systemd[1]: info Starting Cleanup of Temporary Directories...
+2023-02-13T05:00:11+00:00 daemon infoblox.localdomain systemd[1]: info systemd-tmpfiles-clean.service: Succeeded.
+2023-02-13T05:00:11+00:00 daemon infoblox.localdomain systemd[1]: info Finished Cleanup of Temporary Directories.
+2023-02-13T05:04:43+00:00 daemon infoblox.localdomain ntpd[19440]: info kernel reports TIME_ERROR: 0x41: Clock Unsynchronized
+2023-02-13T05:05:12+00:00 daemon infoblox.localdomain systemd[1]: info Started Erlang Port Mapper Daemon.
+2023-02-13T05:17:04+00:00 user infoblox.localdomain serial_console[]: info Empty user_name/password, Rejecting the user
+2023-02-13T05:17:11+00:00 user infoblox.localdomain serial_console[]: info Local authentication succeeded for user admin
+2023-02-13T05:17:11+00:00 user infoblox.localdomain serial_console[]: info User group = admin-group
+2023-02-13T05:17:35+00:00 user infoblox.localdomain monitor[20546]: alert Type: SSH, State: Red, Event: An SSH daemon failure has occurred. 
+2023-02-13T05:18:33+00:00 auth infoblox.localdomain sshd[31882]: info Server listening on 10.35.116.1 port 22.
+2023-02-13T05:30:27+00:00 auth infoblox.localdomain sshd[37154]: info Connection closed by authenticating user root 10.120.21.85 port 34686 [preauth]
+2023-02-13T05:30:44+00:00 auth infoblox.localdomain sshd[37290]: info Local authentication succeeded for user admin
+2023-02-13T05:30:44+00:00 auth infoblox.localdomain sshd[37290]: info User group = admin-group
+2023-02-13T05:30:44+00:00 auth infoblox.localdomain sshd[37290]: info Accepted password for admin from 10.120.21.85 port 52672 ssh2
+2023-02-13T05:30:44+00:00 user infoblox.localdomain -serial_console[]: info User group = admin-group
+2023-02-13T05:30:44+00:00 auth infoblox.localdomain sshd[37290]: info Received disconnect from 10.120.21.85 port 52672:11: disconnected by user
+2023-02-13T05:30:44+00:00 auth infoblox.localdomain sshd[37290]: info Disconnected from user admin 10.120.21.85 port 52672
+2023-02-13T05:30:46+00:00 auth infoblox.localdomain sshd[37411]: info Local authentication succeeded for user admin
+2023-02-13T05:30:46+00:00 auth infoblox.localdomain sshd[37411]: info User group = admin-group
+2023-02-13T05:30:46+00:00 auth infoblox.localdomain sshd[37411]: info Accepted password for admin from 10.120.21.85 port 38974 ssh2
+2023-02-13T05:30:46+00:00 user infoblox.localdomain -serial_console[]: info User group = admin-group
+2023-02-13T05:30:47+00:00 auth infoblox.localdomain sshd[37411]: info Received disconnect from 10.120.21.85 port 38974:11: disconnected by user
+2023-02-13T05:30:47+00:00 auth infoblox.localdomain sshd[37411]: info Disconnected from user admin 10.120.21.85 port 38974
+2023-02-13T05:30:48+00:00 auth infoblox.localdomain sshd[37444]: info Accepted password for root from 10.120.21.85 port 38990 ssh2
+2023-02-13T05:30:48+00:00 auth infoblox.localdomain sshd[31882]: info Received SIGHUP; restarting.
+2023-02-13T05:30:48+00:00 auth infoblox.localdomain sshd[31882]: info Server listening on 10.35.116.1 port 22.
+2023-02-13T05:31:22+00:00 auth infoblox.localdomain sshd[37851]: info Accepted publickey for root from 10.120.21.85 port 59994 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+2023-02-13T05:31:51+00:00 auth infoblox.localdomain sshd[37851]: info Received disconnect from 10.120.21.85 port 59994:11: disconnected by user
+2023-02-13T05:31:51+00:00 auth infoblox.localdomain sshd[37851]: info Disconnected from user root 10.120.21.85 port 59994
+2023-02-13T05:32:07+00:00 auth infoblox.localdomain sshd[38232]: info Failed password for rot from 10.120.21.85 port 59616 ssh2
+2023-02-13T05:32:07+00:00 auth infoblox.localdomain sshd[38232]: info Failed password for rot from 10.120.21.85 port 59616 ssh2
+2023-02-13T05:32:07+00:00 auth infoblox.localdomain sshd[38232]: info Connection closed by authenticating user rot 10.120.21.85 port 59616 [preauth]
+2023-02-13T05:32:12+00:00 auth infoblox.localdomain sshd[38316]: info Accepted publickey for root from 10.120.21.85 port 60268 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+2023-02-13T05:41:34+00:00 auth infoblox.localdomain sshd[38316]: info Received disconnect from 10.120.21.85 port 60268:11: disconnected by user
+2023-02-13T05:41:34+00:00 auth infoblox.localdomain sshd[38316]: info Disconnected from user root 10.120.21.85 port 60268
+2023-02-13T05:42:04+00:00 auth infoblox.localdomain sshd[42651]: info Accepted publickey for root from 10.120.21.85 port 58940 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+2023-02-13T05:42:32+00:00 auth infoblox.localdomain sshd[42651]: info Received disconnect from 10.120.21.85 port 58940:11: disconnected by user
+2023-02-13T05:42:32+00:00 auth infoblox.localdomain sshd[42651]: info Disconnected from user root 10.120.21.85 port 58940
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46267]: info Accepted publickey for root from 10.120.21.85 port 35470 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46274]: info Accepted publickey for root from 10.120.21.85 port 35472 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46274]: info Received disconnect from 10.120.21.85 port 35472:11: disconnected by user
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46274]: info Disconnected from user root 10.120.21.85 port 35472
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46267]: info Received disconnect from 10.120.21.85 port 35470:11: disconnected by user
+2023-02-13T05:50:10+00:00 auth infoblox.localdomain sshd[46267]: info Disconnected from user root 10.120.21.85 port 35470
+2023-02-13T05:52:51+00:00 auth infoblox.localdomain sshd[47467]: info Accepted publickey for root from 10.120.21.85 port 50942 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
+
+==> /infoblox/var/infoblox.log <==
+[2023/02/13 05:52:52.041] (47475 sshd: root [priv]) ssh_pam.c:183 pam_sm_open_session(): SSH session opened: root@10.120.21.85
+
+==> /var/log/syslog <==
+2023-02-13T05:52:52+00:00 auth infoblox.localdomain sshd[47475]: info Accepted publickey for root from 10.120.21.85 port 50950 ssh2: RSA SHA256:zBJCB9Kd2EwEB+n2DpQXRV4PPd9R9KN9dhuq1pVMOnM
