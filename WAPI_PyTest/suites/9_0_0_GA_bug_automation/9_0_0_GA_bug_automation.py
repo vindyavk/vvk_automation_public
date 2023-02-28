@@ -251,7 +251,7 @@ class Bondi_GA_bugs(unittest.TestCase):
             print("remove_tcpdump_log is  not displayed in  synopsis of set debug tools")
             
             
-####################### NIOS-89518 ###################################
+    ####################### NIOS-89518 ###################################
       
       @pytest.mark.run(order=2)
       def test_002_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
@@ -286,7 +286,7 @@ class Bondi_GA_bugs(unittest.TestCase):
         else:
             display_message("SCP server and sysslog size  not added successfully")
             assert False
-    
+
         
       @pytest.mark.run(order=4)
       def test_004_NIOS_89518_rotate_sys_log(self):
@@ -339,11 +339,11 @@ class Bondi_GA_bugs(unittest.TestCase):
             else:
                 assert False
                 display_message("syslog.0.gz file is not  present on scp server")
-    
-    
-    
-####################### NIOS-89426 ###################################
-    
+
+
+
+    ####################### NIOS-89426 ###################################
+
       
       @pytest.mark.run(order=7)
       def test_007_NIOS_89426_Validate_Ext_server_log_DNSUNBOUND(self):
@@ -360,10 +360,10 @@ class Bondi_GA_bugs(unittest.TestCase):
                 display_message("Print DNS_UNBOUND is not listing in External Servers log list")
         else:
                 display_message("Print DNS_UNBOUND is not listing in External Servers log list")
-    
-    
-####################### NIOS-88861 ###################################
-    
+
+
+    ####################### NIOS-88861 ###################################
+
       @pytest.mark.run(order=8)
       def test_008_NIOS_88861_create_nonsuperuser_group(self):
         print("\n====================================")
@@ -379,7 +379,7 @@ class Bondi_GA_bugs(unittest.TestCase):
         else:
             print("Success: created non super user group")
             assert True
-    
+
       @pytest.mark.run(order=9)
       def test_009_NIOS_88861_create_nonsuperuser(self):
         print("\n====================================")
@@ -424,7 +424,7 @@ class Bondi_GA_bugs(unittest.TestCase):
         request_restart = ib_NIOS.wapi_request("POST", object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid_vip)
         sleep(20)
 
-    
+
       @pytest.mark.run(order=11)
       def test_011_NIOS_88861_Validate_infoblox_log(self):
             display_message("Validate /infoblox/var/infoblox.log  for errors ")
@@ -439,7 +439,7 @@ class Bondi_GA_bugs(unittest.TestCase):
                 assert True
       
       
-####################### NIOS-86458 ###################################
+    ####################### NIOS-86458 ###################################
       
       @pytest.mark.run(order=12)
       def test_012_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
@@ -485,7 +485,7 @@ class Bondi_GA_bugs(unittest.TestCase):
             assert True
       
       
-####################### NIOS-89017 ###################################
+    ####################### NIOS-89017 ###################################
       
       @pytest.mark.run(order=15)
       def test_015_NIOS_89017_Create_IPv4_Container_in_defaultnetwork_view(self):
