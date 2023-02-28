@@ -95,10 +95,10 @@ def start_DHCP_service(fqdn="",grid=""):
 
 
 class Bondi_GA_bugs(unittest.TestCase):
-
+"""
 ####################### NIOS-86695 ###################################          >>> VINDYA <<<
 # Create a custom DHCP optionspace
-    """
+    
     @pytest.mark.run(order=1)
     def test_001_NIOS_86695_create_custom_DHCP_optionspace(self):
     
@@ -225,34 +225,34 @@ class Bondi_GA_bugs(unittest.TestCase):
 
 
 ####################### NIOS-88913 ###################################
-    """
+"""    
 
 ####################### NIOS-89203 ###################################      >>> RIZVI <<<
 
-    @pytest.mark.run(order=1)
-    def test_001_NIOS_89203_Validate_set_debug_tools_synopsis(member):
-        child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
-        child.logfile=sys.stdout
-        child.expect('password:')
-        child.sendline('infoblox')
-        child.expect('Infoblox >')
-        child.sendline('set maintenancemode')
-        child.expect('Maintenance Mode ')
-        child.sendline('set debug_tools')
-        child.expect('Maintenance Mode >')
-        c=child.before
-        child.close()
-        if "set debug_tools remove_tcpdump_log" in c:
-            print("remove_tcpdump_log is displayed in synopsis of set debug tools")
-            assert True
-        else:
-            assert False
-            print("remove_tcpdump_log is  not displayed in  synopsis of set debug tools")
+	@pytest.mark.run(order=1)
+	def test_001_NIOS_89203_Validate_set_debug_tools_synopsis(member):
+		child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
+		child.logfile=sys.stdout
+		child.expect('password:')
+		child.sendline('infoblox')
+		child.expect('Infoblox >')
+		child.sendline('set maintenancemode')
+		child.expect('Maintenance Mode ')
+		child.sendline('set debug_tools')
+		child.expect('Maintenance Mode >')
+		c=child.before
+		child.close()
+		if "set debug_tools remove_tcpdump_log" in c:
+		    print("remove_tcpdump_log is displayed in synopsis of set debug tools")
+		    assert True
+		else:
+		    assert False
+		    print("remove_tcpdump_log is  not displayed in  synopsis of set debug tools")
             
             
     ####################### NIOS-89518 ###################################
 	@pytest.mark.run(order=2)
-  	def test_002_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
+	def test_002_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
   		Restart_services()
   		get_grid_dns_ref = ib_NIOS.wapi_request('GET', object_type='grid:dns')
   		grid_dns_ref = json.loads(get_grid_dns_ref)[0]['_ref']
