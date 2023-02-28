@@ -232,23 +232,23 @@ class Bondi_GA_bugs(unittest.TestCase):
       @pytest.mark.run(order=1)
       def test_001_NIOS_89203_Validate_set_debug_tools_synopsis(member):
 
-        child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
-        child.logfile=sys.stdout
-        child.expect('password:')
-        child.sendline('infoblox')
-        child.expect('Infoblox >')
-        child.sendline('set maintenancemode')
-        child.expect('Maintenance Mode ')
-        child.sendline('set debug_tools')
-        child.expect('Maintenance Mode >')
-        c=child.before
-        child.close()
-        if "set debug_tools remove_tcpdump_log" in c:
-            print("remove_tcpdump_log is displayed in synopsis of set debug tools")
-            assert True
-        else:
-            assert False
-            print("remove_tcpdump_log is  not displayed in  synopsis of set debug tools")
+         child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
+         child.logfile=sys.stdout
+         child.expect('password:')
+         child.sendline('infoblox')
+         child.expect('Infoblox >')
+         child.sendline('set maintenancemode')
+         child.expect('Maintenance Mode ')
+         child.sendline('set debug_tools')
+         child.expect('Maintenance Mode >')
+         c=child.before
+         child.close()
+         if "set debug_tools remove_tcpdump_log" in c:
+             print("remove_tcpdump_log is displayed in synopsis of set debug tools")
+             assert True
+         else:
+             assert False
+             print("remove_tcpdump_log is  not displayed in  synopsis of set debug tools")
             
             
     ####################### NIOS-89518 ###################################
