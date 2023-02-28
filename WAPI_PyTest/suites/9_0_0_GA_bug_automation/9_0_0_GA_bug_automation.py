@@ -96,7 +96,7 @@ def start_DHCP_service(fqdn="",grid=""):
 
 class Bondi_GA_bugs(unittest.TestCase):
                                        
-####################### NIOS-86695 ###################################
+####################### NIOS-86695 ###################################          >>> VINDYA <<<
 # Create a custom DHCP optionspace
 
     @pytest.mark.run(order=1)
@@ -255,19 +255,19 @@ class Bondi_GA_bugs(unittest.TestCase):
       
       @pytest.mark.run(order=2)
       def test_002_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
-          dns_restart_services()
+          Restart_services()
           get_grid_dns_ref = ib_NIOS.wapi_request('GET', object_type='grid:dns')
           grid_dns_ref = json.loads(get_grid_dns_ref)[0]['_ref']
           data = {"allow_recursive_query": True,"logging_categories":{"log_queries": True,'log_responses': True} ,"forwarders":[config.grid2_master_vip]}
           response = ib_NIOS.wapi_request('PUT', ref=grid_dns_ref, fields=json.dumps(data))
-          display_msg("Response for enable recursion  ,queries,responses and filter_aaaa on Grid DNS")
-          display_msg(response)
+          display_message("Response for enable recursion  ,queries,responses and filter_aaaa on Grid DNS")
+          display_message(response)
           if bool(re.match("\"grid:dns*.",str(response))):
-            display_msg("Recursion,queries,responses  enabled and forwarder added ")
-            dns_restart_services()
+            display_message("Recursion,queries,responses  enabled and forwarder added ")
+            Restart_services()
             assert True
           else:
-            display_msg("recursion,queries,responses  not enabled  and add forwarder failed")
+            display_message("recursion,queries,responses  not enabled  and add forwarder failed")
             assert False
 
        
@@ -277,14 +277,14 @@ class Bondi_GA_bugs(unittest.TestCase):
         grid_ref= json.loads(get_grid_ref)[0]['_ref']
         data={"external_syslog_backup_servers": [{"address": config.client_ip,"directory_path": "/tmp","enable": True,"port": 22,"protocol": "SCP","username": config.client_user,"password":config.client_password}],  "syslog_size": 10}
         response = ib_NIOS.wapi_request('PUT', ref=grid_ref, fields=json.dumps(data))
-        display_msg("Response for enable recursion  ,queries,responses and filter_aaaa on Grid DNS")
-        display_msg(response)
+        display_message("Response for enable recursion  ,queries,responses and filter_aaaa on Grid DNS")
+        display_message(response)
         if bool(re.match("\"grid*.",str(response))):
-            display_msg("SCP server and sysslog size  added successfully")
-            dns_restart_services()
+            display_message("SCP server and sysslog size  added successfully")
+            Restart_services()
             assert True
         else:
-            display_msg("SCP server and sysslog size  not added successfully")
+            display_message("SCP server and sysslog size  not added successfully")
             assert False
     
         
@@ -303,22 +303,22 @@ class Bondi_GA_bugs(unittest.TestCase):
             child.close()
             if  "The selected log file has been rotated to syslog.0.gz" in output:
                 assert True
-                display_msg("The syslog has been rotated successfully")
+                display_message("The syslog has been rotated successfully")
             else:
                 assert False
-                display_msg("The syslog rotation unsuccessful")
+                display_message("The syslog rotation unsuccessful")
                 
       @pytest.mark.run(order=5)
       def test_005_NIOS_89518_Validate_infoblox_log(self):
-            display_msg("Validate /infoblox/var/infoblox.log  for errors ")
+            display_message("Validate /infoblox/var/infoblox.log  for errors ")
             log("stop","/infoblox/var/infoblox.log",config.grid_vip)
             
             log1=logv("Syslog backup (Backup of rotated syslog file successfully completed. Sending rotated syslog file '/var/log/syslog.0.gz' to the SCP server on "+ config.client_ip,"/infoblox/var/infoblox.log",config.grid_vip)
             if log1 :
-                display_msg("syslog  is copied successflly toscp server")
+                display_message("syslog  is copied successflly toscp server")
                 assert True
             else:
-                display_msg("syslog is not copied successfully to scp server")
+                display_message("syslog is not copied successfully to scp server")
                 assert False
 
       @pytest.mark.run(order=6)
@@ -335,10 +335,10 @@ class Bondi_GA_bugs(unittest.TestCase):
             print(output)
             if "syslog.0.gz" in output:
                 assert True
-                display_msg ("syslog.0.gz file is present on scp server")
+                display_message ("syslog.0.gz file is present on scp server")
             else:
                 assert False
-                display_msg("syslog.0.gz file is not  present on scp server")
+                display_message("syslog.0.gz file is not  present on scp server")
     
     
     
@@ -354,12 +354,12 @@ class Bondi_GA_bugs(unittest.TestCase):
         if response!=400 or 401 or 402:
             if "DNS_UNBOUND" in response:
                 assert False
-                display_msg("Print DNS_UNBOUND is listing in External Servers log list")
+                display_message("Print DNS_UNBOUND is listing in External Servers log list")
             else:
                 assert True
-                display_msg("Print DNS_UNBOUND is not listing in External Servers log list")
+                display_message("Print DNS_UNBOUND is not listing in External Servers log list")
         else:
-                display_msg("Print DNS_UNBOUND is not listing in External Servers log list")
+                display_message("Print DNS_UNBOUND is not listing in External Servers log list")
     
     
 ####################### NIOS-88861 ###################################
@@ -401,7 +401,7 @@ class Bondi_GA_bugs(unittest.TestCase):
       @pytest.mark.run(order=10)
       def test_010_NIOS_88861_import_CSV_file(self):
         log("start","/infoblox/var/infoblox.log",config.grid_vip)
-        dns_restart_services()
+        Restart_services()
         print("Importing test.csv filie...")
         dir_name = os.getcwd()
         base_filename =config.file_name
@@ -427,15 +427,15 @@ class Bondi_GA_bugs(unittest.TestCase):
     
       @pytest.mark.run(order=11)
       def test_011_NIOS_88861_Validate_infoblox_log(self):
-            display_msg("Validate /infoblox/var/infoblox.log  for errors ")
+            display_message("Validate /infoblox/var/infoblox.log  for errors ")
             log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 
             log1=logv("com.infoblox.exception.IbapServerInternalErrorException: com.infoblox.model.ibap.Fault_Exception: Internal Error","/infoblox/var/infoblox.log",config.grid_vip)
             if log1 :
-                display_msg("Import csv file success")
+                display_message("Import csv file success")
                 assert False
             else:
-                display_msg("Import csv file unsuccessful")
+                display_message("Import csv file unsuccessful")
                 assert True
       
       
@@ -444,44 +444,44 @@ class Bondi_GA_bugs(unittest.TestCase):
       @pytest.mark.run(order=12)
       def test_012_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
         log("start","/infoblox/var/infoblox.log",config.grid_vip)
-        display_msg("Create auth zone")
+        display_message("Create auth zone")
 
         data = {"fqdn":"rz1.com","view":"default","grid_primary":[{"name":config.grid1_master_fqdn}]}
         response = ib_NIOS.wapi_request('POST', object_type="zone_auth", fields=json.dumps(data), grid_vip=config.grid_vip)
-        display_msg(response)
+        display_message(response)
         if type(response)== tuple:
-            display_msg("Creating auth_zone Failed")
+            display_message("Creating auth_zone Failed")
             assert False
         else:
-            display_msg("Creating auth_zone  Success")
-            dns_restart_services()
+            display_message("Creating auth_zone  Success")
+            Restart_services()
             assert True
 
 
       @pytest.mark.run(order=13)
       def test_013_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
-        display_msg("Create Unknwon record with TYPE APL")
+        display_message("Create Unknwon record with TYPE APL")
         log("stop","/infoblox/var/infoblox.log",config.grid_vip)
         data={"name": "h1.rz1.com","record_type": "APL","subfield_values": []}
         response=ib_NIOS.wapi_request('POST', object_type="record:unknown", fields=json.dumps(data), grid_vip=config.grid_vip)
-        display_msg(response)
+        display_message(response)
         if type(response)== tuple:
-            display_msg("Creating Unknown record with TYPE APL  Failed")
+            display_message("Creating Unknown record with TYPE APL  Failed")
             assert False
         else:
-            display_msg("Creating Unknown record with TYPE APL  Success")
+            display_message("Creating Unknown record with TYPE APL  Success")
             assert True
 
       @pytest.mark.run(order=14)
       def test_014_test_NIOS_86458_Validate_Infoblox_log_for_errors(self):
-        display_msg("Validate Infoblox.log for errors ")
+        display_message("Validate Infoblox.log for errors ")
         log("stop","/infoblox/var/infoblox.log",config.grid_vip)
         log1=logv(".*Required Value(s) Missing: record_rdata_hash.*","/infoblox/var/infoblox.log",config.grid_vip)
         if log1 :
-            display_msg("Error log message found")
+            display_message("Error log message found")
             assert False
         else:
-            display_msg("No Error logs found")
+            display_message("No Error logs found")
             assert True
       
       
@@ -548,17 +548,17 @@ class Bondi_GA_bugs(unittest.TestCase):
 
       @pytest.mark.run(order=17)
       def test_017_NIOS_89017_Create_Auth_zone(self):
-        display_msg("Create auth zone")
+        display_message("Create auth zone")
 
         data = {"fqdn":"test_nx21.com","view":"default","grid_primary":[{"name":config.grid1_master_fqdn}]}
         response = ib_NIOS.wapi_request('POST', object_type="zone_auth", fields=json.dumps(data), grid_vip=config.grid_vip)
-        display_msg(response)
+        display_message(response)
         if type(response)== tuple:
-            display_msg("Creating auth_zone Failed")
+            display_message("Creating auth_zone Failed")
             assert False
         else:
-            display_msg("Creating auth_zone  Success")
-            dns_restart_services()
+            display_message("Creating auth_zone  Success")
+            Restart_services()
             assert True
 
       @pytest.mark.run(order=18)
@@ -589,14 +589,14 @@ class Bondi_GA_bugs(unittest.TestCase):
 
       @pytest.mark.run(order=19)
       def test_019_NIOS_89017_Validate_sys_log_for_errors(self):
-        display_msg("Validate var/log/syslog for errors ")
+        display_message("Validate var/log/syslog for errors ")
         log("stop","/var/log/syslog",config.grid_vip)
         log1=logv("Attempt to insert object with the same key as an already existing object","/var/log/syslog",config.grid_vip)
         if log1 :
-            display_msg("Error logs found")
+            display_message("Error logs found")
             assert False
         else:
-            display_msg("No Error logs found")
+            display_message("No Error logs found")
             assert True
 
 
