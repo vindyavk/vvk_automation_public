@@ -96,10 +96,143 @@ def start_DHCP_service(fqdn="",grid=""):
 
 class Bondi_GA_bugs(unittest.TestCase):
 
-####################### NIOS-89203 ###################################      >>> RIZVI <<<
+
+####################### NIOS-86695 ###################################      >>> VINDYA <<<
+# Create a custom DHCP optionspace
 
     @pytest.mark.run(order=1)
-    def test_001_NIOS_89203_Validate_set_debug_tools_synopsis(self):
+    def test_001_NIOS_86695_create_custom_DHCP_optionspace(self):
+    
+        start_DHCP_service(config.grid1_master_fqdn,"Master")
+
+        display_message("\n========================================================\n")
+        display_message("Creating a custom DHCP optionspace")
+        display_message("\n========================================================\n")
+
+        get_ref = ib_NIOS.wapi_request('GET', object_type="dhcpoptionspace", grid_vip=config.grid_vip)
+        res = json.loads(get_ref)
+        display_message(get_ref)
+
+        data = {"name":"DHCP_test_space"}
+        response = ib_NIOS.wapi_request('POST', object_type="dhcpoptionspace", fields=json.dumps(data), grid_vip=config.grid_vip)
+        display_message(response)
+
+        if response[0]==400 or response[0]==401 or response[0]==404 or response[0]==500:
+            display_message("FAILURE: Could not create DHCP option space...")
+            assert False
+        else:
+            display_message()
+            display_message("\n--------------------------------------------------------\n")
+            display_message("Validating DHCP option space - DHCP_test_space")
+            display_message("\n--------------------------------------------------------\n")
+
+            response = ib_NIOS.wapi_request('GET', object_type="dhcpoptionspace?name=DHCP_test_space", grid_vip=config.grid_vip)
+            print(response)
+            response=json.loads(response)[0]
+            display_message(response)
+
+            if 'DHCP_test_space' in response['_ref']:
+                display_message(response["_ref"])
+                display_message("SUCCESS: DHCP option space was successfully created!")
+                assert True
+            else:
+                display_message("FAILURE: Could not create DHCP option space...")
+                assert False
+
+
+        display_message("\n***************. Test Case 1 Execution Completed .***************\n")
+
+
+# Create a DHCP option definition for the above DHCP option space
+
+    @pytest.mark.run(order=2)
+    def test_002_NIOS_86695_create_DHCP_option_definition(self):
+
+        display_message("\n========================================================\n")
+        display_message("Creating DHCP option definiation for the option space 'DHCP_test_space'")
+        display_message("\n========================================================\n")
+
+#        get_ref = ib_NIOS.wapi_request('GET', object_type="dhcpoptiondefinition?_return_fields=space,type,code,name", grid_vip=config.grid_vip)
+#        res = json.loads(get_ref)
+#        display_message(get_ref)
+
+        data = {"name": "policy-filter", "code": 21, "space": "DHCP_test_space", "type": "array of ip-address"}
+        response = ib_NIOS.wapi_request('POST', object_type="dhcpoptiondefinition", fields=json.dumps(data), grid_vip=config.grid_vip)
+        display_message(response)
+
+        if response[0]==400 or response[0]==401 or response[0]==404 or response[0]==500:
+            display_message("FAILURE: Could not create DHCP option space...")
+            assert False
+        else:
+            display_message()
+            display_message("\n--------------------------------------------------------\n")
+            display_message("Validating DHCP option definition")
+            display_message("\n--------------------------------------------------------\n")
+
+            response = ib_NIOS.wapi_request('GET', object_type="dhcpoptiondefinition?space=DHCP_test_space", grid_vip=config.grid_vip)
+            print(response)
+            response=json.loads(response)[0]
+            display_message(response)
+
+            if 'policy-filter' in response['name']:
+                display_message(response["_ref"])
+                display_message("SUCCESS: DHCP option space was successfully created!")
+                assert True
+            else:
+                display_message("FAILURE: Could not create DHCP option space...")
+                assert False
+
+
+        display_message("\n***************. Test Case 2 Execution Completed .***************\n")
+
+
+# Restarting Services and validating logs
+
+    @pytest.mark.run(order=3)
+    def test_003_NIOS_86695_restart_services_and_validate_logs(self):
+
+        display_message("\n========================================================\n")
+        display_message("Restarting services and validate logs")
+        display_message("\n========================================================\n")
+
+
+        log("start","/infoblox/var/infoblox.log",config.grid_vip)
+        log("start","/var/log/syslog",config.grid_vip)
+        sleep(10)
+        
+        Restart_services()
+        
+        log("stop","/infoblox/var/infoblox.log",config.grid_vip)
+        log("stop","/var/log/syslog",config.grid_vip)
+
+        error_message1 = "Unable to start DHCPv4 service because no valid configuration files are available"
+        error_message2 = "No DHCPv4 configuration files found. Rebuilding conf file dhcpd.conf"
+
+        log1=logv(error_message1,"/infoblox/var/infoblox.log",config.grid_vip)
+        print(log1)
+        log2=logv(error_message2,"/var/log/syslog",config.grid_vip)
+        print(log2)
+        
+        if log1 == None and log2 == None:
+            print("SUCCESS: ")
+            assert True
+
+        else:
+            print("FAILURE: ")
+            assert False
+        
+        display_message("\n***************. Test Case 3 Execution Completed .***************\n")
+
+
+
+####################### NIOS-88913 ###################################
+
+
+
+####################### NIOS-89203 ###################################      >>> RIZVI <<<
+
+    @pytest.mark.run(order=4)
+    def test_004_NIOS_89203_Validate_set_debug_tools_synopsis(self):
         child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
         child.logfile=sys.stdout
         child.expect('password:')
@@ -120,8 +253,8 @@ class Bondi_GA_bugs(unittest.TestCase):
             
             
     ####################### NIOS-89518 ###################################
-    @pytest.mark.run(order=2)
-    def test_002_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
+    @pytest.mark.run(order=5)
+    def test_005_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
   		Restart_services()
   		get_grid_dns_ref = ib_NIOS.wapi_request('GET', object_type='grid:dns')
   		grid_dns_ref = json.loads(get_grid_dns_ref)[0]['_ref']
@@ -138,8 +271,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 
        
-    @pytest.mark.run(order=3)
-    def test_003_NIOS_89518_add_syslog_backup_size_sever(self):
+    @pytest.mark.run(order=6)
+    def test_006_NIOS_89518_add_syslog_backup_size_sever(self):
 		get_grid_ref = ib_NIOS.wapi_request('GET', object_type='grid')
 		grid_ref= json.loads(get_grid_ref)[0]['_ref']
 		data={"external_syslog_backup_servers": [{"address": config.client_ip,"directory_path": "/tmp","enable": True,"port": 22,"protocol": "SCP","username": config.client_user,"password":config.client_password}],  "syslog_size": 10}
@@ -155,8 +288,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 
         
-    @pytest.mark.run(order=4)
-    def test_004_NIOS_89518_rotate_sys_log(self):
+    @pytest.mark.run(order=7)
+    def test_007_NIOS_89518_rotate_sys_log(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
 		child.logfile=sys.stdout
@@ -175,8 +308,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 			display_message("The syslog rotation unsuccessful")
                 
-    @pytest.mark.run(order=5)
-    def test_005_NIOS_89518_Validate_infoblox_log(self):
+    @pytest.mark.run(order=8)
+    def test_008_NIOS_89518_Validate_infoblox_log(self):
 		display_message("Validate /infoblox/var/infoblox.log  for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 
@@ -188,8 +321,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			display_message("syslog is not copied successfully to scp server")
 			assert False
 
-    @pytest.mark.run(order=6)
-    def test_006_NIOS_89518_Validate_client_server(self):
+    @pytest.mark.run(order=9)
+    def test_009_NIOS_89518_Validate_client_server(self):
 		child = pexpect.spawn('ssh -o StrictHostKeyChecking=no '+config.client_user+'@'+config.client_ip,timeout=30)
 		child.logfile=sys.stdout
 		child.expect(':')
@@ -212,8 +345,8 @@ class Bondi_GA_bugs(unittest.TestCase):
     ####################### NIOS-89426 ###################################
 
       
-    @pytest.mark.run(order=7)
-    def test_007_NIOS_89426_Validate_Ext_server_log_DNSUNBOUND(self):
+    @pytest.mark.run(order=10)
+    def test_010_NIOS_89426_Validate_Ext_server_log_DNSUNBOUND(self):
 		grid =  ib_NIOS.wapi_request('GET', object_type="grid")
 		ref = json.loads(grid)[0]['_ref']
 		data = {'syslog_servers': [{'address': '1.1.1.1','category_list': ['DNS_IDNSD',],'only_category_list': True}]}
@@ -231,8 +364,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 
     ####################### NIOS-88861 ###################################
 
-    @pytest.mark.run(order=8)
-    def test_008_NIOS_88861_create_nonsuperuser_group(self):
+    @pytest.mark.run(order=11)
+    def test_011_NIOS_88861_create_nonsuperuser_group(self):
 		print("\n====================================")
 		print("create_nonsuperuser_group")
 		print("======================================")
@@ -247,8 +380,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("Success: created non super user group")
 			assert True
 
-    @pytest.mark.run(order=9)
-    def test_009_NIOS_88861_create_nonsuperuser(self):
+    @pytest.mark.run(order=12)
+    def test_012_NIOS_88861_create_nonsuperuser(self):
 		print("\n====================================")
 		print("create_nonsuperuser_user")
 		print("======================================")
@@ -265,8 +398,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("Success: created non super user ")
 			assert True
 
-    @pytest.mark.run(order=10)
-    def test_010_NIOS_88861_import_CSV_file(self):
+    @pytest.mark.run(order=13)
+    def test_013_NIOS_88861_import_CSV_file(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		Restart_services()
 		print("Importing test.csv filie...")
@@ -292,8 +425,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 		sleep(20)
 
 
-    @pytest.mark.run(order=11)
-    def test_011_NIOS_88861_Validate_infoblox_log(self):
+    @pytest.mark.run(order=14)
+    def test_014_NIOS_88861_Validate_infoblox_log(self):
 		display_message("Validate /infoblox/var/infoblox.log  for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 
@@ -308,8 +441,8 @@ class Bondi_GA_bugs(unittest.TestCase):
       
     ####################### NIOS-86458 ###################################
       
-    @pytest.mark.run(order=12)
-    def test_012_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
+    @pytest.mark.run(order=15)
+    def test_015_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		display_message("Create auth zone")
 
@@ -325,8 +458,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert True
 
 
-    @pytest.mark.run(order=13)
-    def test_013_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
+    @pytest.mark.run(order=16)
+    def test_016_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
 		display_message("Create Unknwon record with TYPE APL")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 		data={"name": "h1.rz1.com","record_type": "APL","subfield_values": []}
@@ -339,8 +472,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			display_message("Creating Unknown record with TYPE APL  Success")
 			assert True
 
-    @pytest.mark.run(order=14)
-    def test_014_test_NIOS_86458_Validate_Infoblox_log_for_errors(self):
+    @pytest.mark.run(order=17)
+    def test_017_test_NIOS_86458_Validate_Infoblox_log_for_errors(self):
 		display_message("Validate Infoblox.log for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 		log1=logv(".*Required Value(s) Missing: record_rdata_hash.*","/infoblox/var/infoblox.log",config.grid_vip)
@@ -354,8 +487,8 @@ class Bondi_GA_bugs(unittest.TestCase):
       
     ####################### NIOS-89017 ###################################
       
-    @pytest.mark.run(order=15)
-    def test_015_NIOS_89017_Create_IPv4_Container_in_defaultnetwork_view(self):
+    @pytest.mark.run(order=18)
+    def test_018_NIOS_89017_Create_IPv4_Container_in_defaultnetwork_view(self):
 		logging.info("Create an IPv4 Container in defaultnetwork view")
 		network_data = {"network":"10.0.0.0/8","network_view": "default"}
 		response = ib_NIOS.wapi_request('POST', object_type="networkcontainer", fields=json.dumps(network_data), grid_vip=config.grid_vip)
@@ -380,8 +513,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 				assert False
 				print("Network Container Execution not verified")
 
-    @pytest.mark.run(order=16)
-    def test_016_NIOS_89017_Create_IPv4_Network(self):
+    @pytest.mark.run(order=19)
+    def test_019_NIOS_89017_Create_IPv4_Network(self):
 		network_data = {"network": "10.0.0.0/16","network_view": "default","members":[{"_struct": "dhcpmember","ipv4addr":config.grid_vip}]}
 		#network_data = {"network": "20.0.0.0/8",
 		 #               "members": [{"_struct": "dhcpmember", "ipv4addr": config.master01lan1v4, "name": config.grid_fqdn}],
@@ -413,8 +546,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("10.0.0.0/16 network addition failed")
 
 
-    @pytest.mark.run(order=17)
-    def test_017_NIOS_89017_Create_Auth_zone(self):
+    @pytest.mark.run(order=20)
+    def test_020_NIOS_89017_Create_Auth_zone(self):
 		display_message("Create auth zone")
 
 		data = {"fqdn":"test_nx21.com","view":"default","grid_primary":[{"name":config.grid1_master_fqdn}]}
@@ -428,8 +561,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			Restart_services()
 			assert True
 
-    @pytest.mark.run(order=18)
-    def test_018_NIOS_89017_Host_record(self):
+    @pytest.mark.run(order=21)
+    def test_021_NIOS_89017_Host_record(self):
 		data ={"ipv4addrs": [{"configure_for_dhcp": False,"ipv4addr": "10.0.0.16"}], "name": "h3.test_nx21.com","view": "default","use_ttl":True,"ttl":8400}
 		response = ib_NIOS.wapi_request('POST', object_type="record:host", fields=json.dumps(data), grid_vip=config.grid_vip)
 		print(response)
@@ -454,8 +587,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 				print("Host record TTL Tab update success")
 
 
-    @pytest.mark.run(order=19)
-    def test_019_NIOS_89017_Validate_sys_log_for_errors(self):
+    @pytest.mark.run(order=22)
+    def test_022_NIOS_89017_Validate_sys_log_for_errors(self):
 		display_message("Validate var/log/syslog for errors ")
 		log("stop","/var/log/syslog",config.grid_vip)
 		log1=logv("Attempt to insert object with the same key as an already existing object","/var/log/syslog",config.grid_vip)
