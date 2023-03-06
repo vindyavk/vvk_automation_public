@@ -224,15 +224,73 @@ class Bondi_GA_bugs(unittest.TestCase):
         display_message("\n***************. Test Case 3 Execution Completed .***************\n")
 
 
+# Clean Up
+
+    @pytest.mark.run(order=4)
+    def test_004_NIOS_86695_cleanup(self):
+        display_message("\n============================================\n")
+        display_message("CLEANUP: Reverting back to original setup...")
+        display_message("\n============================================\n")
+
+        display_message("Deleting the DHCP optionspace 'DHCP_test_space'...")
+
+        get_ref = ib_NIOS.wapi_request('GET',object_type="dhcpoptionspace")
+        for ref in json.loads(get_ref):
+            if 'DHCP_test_space' in ref["_ref"]:
+                ib_NIOS.wapi_request('DELETE',object_type=ref['_ref'])
+
+        print("\n***************. Test Case 4 Execution Completed .***************\n")	
 
 ####################### NIOS-88913 ###################################
+
+# Validating if the hostname is updated correctly
+
+    @pytest.mark.run(order=5)
+    def test_005_NIOS_88913_cleanup(self):
+        display_message("\n============================================\n")
+        display_message("Validating if the hostname is updated correctly")
+        display_message("\n============================================\n")
+
+
+        try:
+            child = pexpect.spawn('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@'+config.grid_vip)
+            child.logfile=sys.stdout
+            child.expect(".*#")
+            child.sendline("cat /etc/hostname")
+            child.expect(".*#")
+            output1=child.after
+            output1=output1.split('\r')[1].strip('\n')
+            child.sendline("hostname --fqdn")
+            child.expect(".*#")
+            output2=child.after
+            output2=output2.split('\r')[1].strip('\n')
+            print(output2)
+            
+            if output1 == config.grid1_master_fqdn and output2 == config.grid1_master_fqdn:
+                print("SUCCESS: ")
+                assert True
+            else:
+                print("FAILURE: ")
+                assert False
+
+        except Exception as e:
+            print(e)
+            child.close()
+            print("FAILURE: ")
+            assert False
+
+        finally:
+            child.close()
+
+
+        print("\n***************. Test Case 5 Execution Completed .***************\n")
 
 
 
 ####################### NIOS-89203 ###################################      >>> RIZVI <<<
 
-    @pytest.mark.run(order=4)
-    def test_004_NIOS_89203_Validate_set_debug_tools_synopsis(self):
+    @pytest.mark.run(order=6)
+    def test_006_NIOS_89203_Validate_set_debug_tools_synopsis(self):
         child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
         child.logfile=sys.stdout
         child.expect('password:')
@@ -253,8 +311,8 @@ class Bondi_GA_bugs(unittest.TestCase):
             
             
     ####################### NIOS-89518 ###################################
-    @pytest.mark.run(order=5)
-    def test_005_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
+    @pytest.mark.run(order=7)
+    def test_007_NIOS_89518_add_forwarder_enable_recursion_queries_responses(self):
   		Restart_services()
   		get_grid_dns_ref = ib_NIOS.wapi_request('GET', object_type='grid:dns')
   		grid_dns_ref = json.loads(get_grid_dns_ref)[0]['_ref']
@@ -271,8 +329,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 
        
-    @pytest.mark.run(order=6)
-    def test_006_NIOS_89518_add_syslog_backup_size_sever(self):
+    @pytest.mark.run(order=8)
+    def test_008_NIOS_89518_add_syslog_backup_size_sever(self):
 		get_grid_ref = ib_NIOS.wapi_request('GET', object_type='grid')
 		grid_ref= json.loads(get_grid_ref)[0]['_ref']
 		data={"external_syslog_backup_servers": [{"address": config.client_ip,"directory_path": "/tmp","enable": True,"port": 22,"protocol": "SCP","username": config.client_user,"password":config.client_password}],  "syslog_size": 10}
@@ -288,8 +346,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 
         
-    @pytest.mark.run(order=7)
-    def test_007_NIOS_89518_rotate_sys_log(self):
+    @pytest.mark.run(order=9)
+    def test_009_NIOS_89518_rotate_sys_log(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		child = pexpect.spawn('ssh -o StrictHostKeyChecking=no admin@'+config.grid_vip)
 		child.logfile=sys.stdout
@@ -308,8 +366,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert False
 			display_message("The syslog rotation unsuccessful")
                 
-    @pytest.mark.run(order=8)
-    def test_008_NIOS_89518_Validate_infoblox_log(self):
+    @pytest.mark.run(order=10)
+    def test_010_NIOS_89518_Validate_infoblox_log(self):
 		display_message("Validate /infoblox/var/infoblox.log  for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 
@@ -321,8 +379,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			display_message("syslog is not copied successfully to scp server")
 			assert False
 
-    @pytest.mark.run(order=9)
-    def test_009_NIOS_89518_Validate_client_server(self):
+    @pytest.mark.run(order=11)
+    def test_011_NIOS_89518_Validate_client_server(self):
 		child = pexpect.spawn('ssh -o StrictHostKeyChecking=no '+config.client_user+'@'+config.client_ip,timeout=30)
 		child.logfile=sys.stdout
 		child.expect(':')
@@ -345,8 +403,8 @@ class Bondi_GA_bugs(unittest.TestCase):
     ####################### NIOS-89426 ###################################
 
       
-    @pytest.mark.run(order=10)
-    def test_010_NIOS_89426_Validate_Ext_server_log_DNSUNBOUND(self):
+    @pytest.mark.run(order=12)
+    def test_012_NIOS_89426_Validate_Ext_server_log_DNSUNBOUND(self):
 		grid =  ib_NIOS.wapi_request('GET', object_type="grid")
 		ref = json.loads(grid)[0]['_ref']
 		data = {'syslog_servers': [{'address': '1.1.1.1','category_list': ['DNS_IDNSD',],'only_category_list': True}]}
@@ -364,8 +422,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 
     ####################### NIOS-88861 ###################################
 
-    @pytest.mark.run(order=11)
-    def test_011_NIOS_88861_create_nonsuperuser_group(self):
+    @pytest.mark.run(order=13)
+    def test_013_NIOS_88861_create_nonsuperuser_group(self):
 		print("\n====================================")
 		print("create_nonsuperuser_group")
 		print("======================================")
@@ -380,8 +438,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("Success: created non super user group")
 			assert True
 
-    @pytest.mark.run(order=12)
-    def test_012_NIOS_88861_create_nonsuperuser(self):
+    @pytest.mark.run(order=14)
+    def test_014_NIOS_88861_create_nonsuperuser(self):
 		print("\n====================================")
 		print("create_nonsuperuser_user")
 		print("======================================")
@@ -398,8 +456,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("Success: created non super user ")
 			assert True
 
-    @pytest.mark.run(order=13)
-    def test_013_NIOS_88861_import_CSV_file(self):
+    @pytest.mark.run(order=15)
+    def test_015_NIOS_88861_import_CSV_file(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		Restart_services()
 		print("Importing test.csv filie...")
@@ -425,8 +483,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 		sleep(20)
 
 
-    @pytest.mark.run(order=14)
-    def test_014_NIOS_88861_Validate_infoblox_log(self):
+    @pytest.mark.run(order=16)
+    def test_016_NIOS_88861_Validate_infoblox_log(self):
 		display_message("Validate /infoblox/var/infoblox.log  for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 
@@ -441,8 +499,8 @@ class Bondi_GA_bugs(unittest.TestCase):
       
     ####################### NIOS-86458 ###################################
       
-    @pytest.mark.run(order=15)
-    def test_015_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
+    @pytest.mark.run(order=17)
+    def test_017_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
 		log("start","/infoblox/var/infoblox.log",config.grid_vip)
 		display_message("Create auth zone")
 
@@ -458,8 +516,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			assert True
 
 
-    @pytest.mark.run(order=16)
-    def test_016_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
+    @pytest.mark.run(order=18)
+    def test_018_test_NIOS_86458_Create_authzone_Unknown_record_type_APL(self):
 		display_message("Create Unknwon record with TYPE APL")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 		data={"name": "h1.rz1.com","record_type": "APL","subfield_values": []}
@@ -472,8 +530,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			display_message("Creating Unknown record with TYPE APL  Success")
 			assert True
 
-    @pytest.mark.run(order=17)
-    def test_017_test_NIOS_86458_Validate_Infoblox_log_for_errors(self):
+    @pytest.mark.run(order=19)
+    def test_019_test_NIOS_86458_Validate_Infoblox_log_for_errors(self):
 		display_message("Validate Infoblox.log for errors ")
 		log("stop","/infoblox/var/infoblox.log",config.grid_vip)
 		log1=logv(".*Required Value(s) Missing: record_rdata_hash.*","/infoblox/var/infoblox.log",config.grid_vip)
@@ -487,8 +545,8 @@ class Bondi_GA_bugs(unittest.TestCase):
       
     ####################### NIOS-89017 ###################################
       
-    @pytest.mark.run(order=18)
-    def test_018_NIOS_89017_Create_IPv4_Container_in_defaultnetwork_view(self):
+    @pytest.mark.run(order=20)
+    def test_020_NIOS_89017_Create_IPv4_Container_in_defaultnetwork_view(self):
 		logging.info("Create an IPv4 Container in defaultnetwork view")
 		network_data = {"network":"10.0.0.0/8","network_view": "default"}
 		response = ib_NIOS.wapi_request('POST', object_type="networkcontainer", fields=json.dumps(network_data), grid_vip=config.grid_vip)
@@ -513,8 +571,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 				assert False
 				print("Network Container Execution not verified")
 
-    @pytest.mark.run(order=19)
-    def test_019_NIOS_89017_Create_IPv4_Network(self):
+    @pytest.mark.run(order=21)
+    def test_021_NIOS_89017_Create_IPv4_Network(self):
 		network_data = {"network": "10.0.0.0/16","network_view": "default","members":[{"_struct": "dhcpmember","ipv4addr":config.grid_vip}]}
 		#network_data = {"network": "20.0.0.0/8",
 		 #               "members": [{"_struct": "dhcpmember", "ipv4addr": config.master01lan1v4, "name": config.grid_fqdn}],
@@ -546,8 +604,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			print("10.0.0.0/16 network addition failed")
 
 
-    @pytest.mark.run(order=20)
-    def test_020_NIOS_89017_Create_Auth_zone(self):
+    @pytest.mark.run(order=22)
+    def test_022_NIOS_89017_Create_Auth_zone(self):
 		display_message("Create auth zone")
 
 		data = {"fqdn":"test_nx21.com","view":"default","grid_primary":[{"name":config.grid1_master_fqdn}]}
@@ -561,8 +619,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 			Restart_services()
 			assert True
 
-    @pytest.mark.run(order=21)
-    def test_021_NIOS_89017_Host_record(self):
+    @pytest.mark.run(order=23)
+    def test_023_NIOS_89017_Host_record(self):
 		data ={"ipv4addrs": [{"configure_for_dhcp": False,"ipv4addr": "10.0.0.16"}], "name": "h3.test_nx21.com","view": "default","use_ttl":True,"ttl":8400}
 		response = ib_NIOS.wapi_request('POST', object_type="record:host", fields=json.dumps(data), grid_vip=config.grid_vip)
 		print(response)
@@ -587,8 +645,8 @@ class Bondi_GA_bugs(unittest.TestCase):
 				print("Host record TTL Tab update success")
 
 
-    @pytest.mark.run(order=22)
-    def test_022_NIOS_89017_Validate_sys_log_for_errors(self):
+    @pytest.mark.run(order=24)
+    def test_024_NIOS_89017_Validate_sys_log_for_errors(self):
 		display_message("Validate var/log/syslog for errors ")
 		log("stop","/var/log/syslog",config.grid_vip)
 		log1=logv("Attempt to insert object with the same key as an already existing object","/var/log/syslog",config.grid_vip)
