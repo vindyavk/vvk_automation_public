@@ -1,2 +1,5 @@
 username: admin
 password: infoblox
+safenet_ip: 10.39.10.14
+safenet_user: admin
+safenet_password: Infoblox123
