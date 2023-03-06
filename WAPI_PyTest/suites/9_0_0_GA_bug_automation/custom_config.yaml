@@ -3,3 +3,7 @@ password: infoblox
 safenet_ip: 10.39.10.14
 safenet_user: admin
 safenet_password: Infoblox123
+forwarder_ip: 10.35.160.1
+non_su_username: infoblox1
+non_su_password: infoblox1
+file_name:      nxs.csv
