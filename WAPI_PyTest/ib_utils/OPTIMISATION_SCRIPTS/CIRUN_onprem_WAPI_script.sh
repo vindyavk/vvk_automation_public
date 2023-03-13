@@ -76,7 +76,7 @@ cat config.py
 
 pytest ${SUITE_NAME}.py -vss -rP -rF --html=${SUITE_NAME}_report.html --junit-xml=${SUITE_NAME}_results.xml -vv || true
 
-sed -i 's/="pytest"/="$SUITE_NAME_results"/g' $SUITE_NAME_results.xml
+#sed -i 's/="pytest"/="$SUITE_NAME_results"/g' $SUITE_NAME_results.xml
 
 
 cp -rf ${SUITE_NAME}_results.xml SUMMARY_reporting_portal_junit.xml
